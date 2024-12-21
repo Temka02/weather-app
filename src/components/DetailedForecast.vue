@@ -3,7 +3,7 @@
       <div class="dayWindows" v-if="detailedWeather && isDayNow()">
         <div class="card clearSky" v-if="detailedWeather && detailedWeather.clouds.all <= 10">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -57,7 +57,7 @@
         </div>
         <div class="card fewClouds" v-if="detailedWeather && detailedWeather.clouds.all > 10 && detailedWeather.clouds.all <= 35">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -111,7 +111,7 @@
         </div>
         <div class="card clouds" v-if="detailedWeather && detailedWeather.clouds.all > 35 && detailedWeather.clouds.all <= 70">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -165,7 +165,7 @@
         </div>
         <div class="card overcastClouds" v-if="detailedWeather && detailedWeather.clouds.all > 70">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -221,7 +221,7 @@
       <div class="nightWindows" v-else>
         <div class="card clearSky" v-if="detailedWeather && detailedWeather.clouds.all <= 18">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -275,7 +275,7 @@
         </div>
         <div class="card clouds" v-if="detailedWeather && detailedWeather.clouds.all > 18 && detailedWeather.clouds.all <= 65">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -329,7 +329,7 @@
         </div>
         <div class="card overcastClouds" v-if="detailedWeather && detailedWeather.clouds.all > 65">
           <div class="header">
-            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}. Yesterday at this time {{ temperatureYesterday }}°C</div>
+            <div v-if="detailedWeather" class="extraTempInfo">It's {{getCityTime()}}, {{ detailedWeather.name }}</div>
           </div>
           <div class="mainInfo">
             <div class="tempMain" v-if="detailedWeather && detailedWeather.main">
@@ -403,7 +403,7 @@ export default {
       temperatureYesterday: 0,
       forecastList: null,
       currentIndex: 0,
-      itemsPerPage: 8,
+      itemsPerPage: 12,
     }
   },
   computed: {
@@ -527,16 +527,17 @@ export default {
 
 .main {
   /* background-color: #fff; */
-  background-color: #F5F5F5;
+  /* background-color: #F5F5F5; */
+  background-color: #efefef;
   /* background: linear-gradient(to left, #fff9dc, #daf1ff); */
   font-family: 'Nunito', sans-serif;
   width: 100%;
-  height: 81vh;
-  padding-top: 19vh;
+  height: 83vh;
+  padding-top: 17vh;
   overflow-y: auto;
 }
 .mainWindow{
-    width: 60%;
+    width: 80%;
     height: 60vh;
     margin: 0px auto;
     border-radius: 13px;
@@ -607,8 +608,8 @@ export default {
 
 .nightWindows .clouds{
   color:#fff;
-  width: 60%;
-  height: 54vh;
+  width: 80%;
+  height: 59vh;
   margin: 0px auto;
   border-radius: 13px;
   padding: 40px 20px 10px 20px;
@@ -633,6 +634,8 @@ export default {
 
 
 .card{
+  width: 87% !important;
+  height: 70vh !important;
   display: flex;
   flex-direction: column;  
   justify-content: center;
@@ -718,8 +721,8 @@ export default {
   font-size: 11.5px;
 }
 .forecastCard img{
-  height: 31px;
-  width: 31px;
+  height: 41px;
+  width: 41px;
 }
 .btn {
   margin: 0px 10px;
@@ -747,13 +750,14 @@ export default {
 }
 @media (min-width: 1200px) {
   .header{
-    font-size: 24px;
+    font-size: 27px;
+    font-weight: 700;
   }
   .otherInfo div{
     font-size: 18px;
   }
   .card{
-    height: 57vh !important;
+    height: 57vh;
   }
   .forecastCard {
     font-size: 17px !important;

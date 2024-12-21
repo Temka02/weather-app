@@ -396,7 +396,8 @@ export default {
   height: 81vh;
   padding-top: 19vh;
   overflow-y: auto;
-  background-color: #F5F5F5;
+  background-color: #efefef;
+  /* background-color: #F5F5F5; */
 }
 
 .main .windows{
