@@ -445,11 +445,6 @@ export default {
       const utcTime = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
       const cityTime = new Date(utcTime + cityOffset);
       const curTime = cityTime.getTime()
-      console.log("curTime "+curTime)
-      console.log("sunset "+((this.detailedWeather.sys.sunset+this.detailedWeather.timezone) * 1000 - 10800000))
-      console.log("sunrise "+((this.detailedWeather.sys.sunrise+this.detailedWeather.timezone)*1000 - 10800000))
-      console.log(curTime - ((this.detailedWeather.sys.sunset+this.detailedWeather.timezone) * 1000 - 10800000) > 3600000)
-      console.log((this.detailedWeather.sys.sunrise+this.detailedWeather.timezone)*1000 - 10800000 - curTime > 3600000)
       if ((curTime - ((this.detailedWeather.sys.sunset+this.detailedWeather.timezone) * 1000 - 10800000) > 3600000) || ((this.detailedWeather.sys.sunrise+this.detailedWeather.timezone)*1000 - 10800000 - curTime > 3600000)){
         console.log(false)
         return false
