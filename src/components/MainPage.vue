@@ -138,12 +138,7 @@ export default {
     }
   },
   mounted(){
-    // const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
-    if( this.selectedCity == "Moscow"){
-      this.getWeatherInMoscow()
-    } else{
-      this.getWeatherInCity()
-    }
+    this.getWeatherInCity()
   },
   computed: {
     getProgress() {
@@ -195,60 +190,10 @@ export default {
       const [hours, minutes] = time.split(":").map(Number);
       return hours * 3600000 + minutes * 60000;
     },
-    async getWeatherInMoscow() {
-      try {
-        const apiKey = '2f4252a9daaedcde609f511ba17fb410';
-        const cacheKey = "Moscow";
-        const currentTime = Date.now();
-
-        if (this.cache[cacheKey] && currentTime - this.cache[cacheKey].timestamp < 10 * 60 * 1000) {
-          console.log("Данные из кэша:");
-          this.weather = this.cache[cacheKey].data;
-          this.wind = this.cache[cacheKey].data.wind;
-          this.lat = weatherData.coord.lat;
-          this.lon = weatherData.coord.lon;
-          this.isDataLoaded = true;
-          await this.getСlosestPrecipitation(this.lat, this.lon);
-          return;
-        }
-
-        if (currentTime - this.lastRequestTime < this.rateLimit) {
-          console.log("Ожидание перед запросом...");
-          await new Promise((resolve) =>
-            setTimeout(resolve, this.rateLimit)
-          );
-        }
-
-        const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid=${apiKey}&units=metric`);
-        const weatherData = await weatherRes.json();
-
-        if (weatherRes.status === 200 || weatherRes.status === 201) {
-          this.weather = weatherData;
-          this.wind = weatherData.wind;
-          this.lat = weatherData.coord.lat;
-          this.lon = weatherData.coord.lon;
-          this.isDataLoaded = true;
-          this.cache[cacheKey] = {
-            data: weatherData,
-            timestamp: currentTime,
-          };
-          console.log("Данные о погоде успешно получены:");
-          console.log(this.weather)
-          this.lastRequestTime = currentTime;
-
-          await this.getСlosestPrecipitation(this.lat, this.lon);
-        } else {
-          alert('Ошибка!');
-        }
-      } 
-      catch (error) {
-        console.error(error);
-      }
-    },
     async getWeatherInCity(){
       try {
         const apiKey = '2f4252a9daaedcde609f511ba17fb410';
-        const newCity = this.selectedCity || 'Moscow'; // Дефолтный город
+        const newCity = this.selectedCity || 'Moscow';
         const cacheKey = newCity.toLowerCase();
         const currentTime = Date.now();
 
@@ -289,45 +234,6 @@ export default {
           console.error(error)
       }
     },
-    // async getDailyPrecipitation(lat, lon) {
-    //   try {
-    //     const curLat = lat;
-    //     const curLon = lon;
-    //     const apiKey = '2f4252a9daaedcde609f511ba17fb410';
-    //     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${curLat}&lon=${curLon}&appid=${apiKey}&units=metric`;
-    //     // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${curLat}&lon=${curLon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
-    //     const response = await fetch(url);
-    //     if (!response.ok) {
-    //       // Статус ответа не в пределах 200-299
-    //       const errorDetails = await response.text();
-    //       throw new Error(`Ошибка запроса. Статус: ${response.status}. ${errorDetails}`);
-    //     }
-    //     const data = await response.json();
-    //     if (!data.daily || !data.daily[0] || data.daily[0].pop === undefined) {
-    //       throw new Error('Не удалось получить данные о вероятности осадков.');
-    //     }
-    //     if (response.status === 200 || response.status === 201) {
-    //       this.dailyPrecipitation = data;
-    //       console.log(`Вероятность осадков сегодня: ${this.dailyPrecipitation}%`);
-    //     } else {
-    //       console.error("Ошибка получения вероятности осадков.");
-    //     }
-    //   } catch (error) {
-    //     if (error.message.includes("Ошибка запроса")) {
-    //       // Ошибка с запросом, например, неверный API-ключ или лимит запросов
-    //       console.error("Проблема с запросом: ", error.message);
-    //       alert("Произошла ошибка с запросом. Пожалуйста, проверьте API-ключ или повторите попытку позже.");
-    //     } else if (error.message.includes("Не удалось получить данные")) {
-    //       // Проблемы с получением данных
-    //       console.error("Данные о вероятности осадков не найдены: ", error.message);
-    //       alert("Не удалось получить данные о вероятности осадков. Пожалуйста, проверьте координаты.");
-    //     } else {
-    //       // Другие непредвиденные ошибки
-    //       console.error("Произошла непредвиденная ошибка: ", error);
-    //       alert("Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.");
-    //     }
-    //   }
-    // },
     async getСlosestPrecipitation(lat, lon) {
       const apiKey = '2f4252a9daaedcde609f511ba17fb410';
       const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
@@ -385,7 +291,6 @@ export default {
     },
   }
 } 
-//https://api.openweathermap.org/data/2.5/weather?q=London&appid=530a346f6711fc2b66943649afb7baf3&units=metric
 </script>
 
 <style scoped>

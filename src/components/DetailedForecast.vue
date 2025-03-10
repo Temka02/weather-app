@@ -439,12 +439,15 @@ export default {
         this.currentIndex -= 1;
       }
     },
-    isDayNow(){
+    getCityTimeInMillis() {
       const now = new Date();
       const cityOffset = this.detailedWeather.timezone * 1000; 
       const utcTime = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
       const cityTime = new Date(utcTime + cityOffset);
-      const curTime = cityTime.getTime()
+      return cityTime;
+    },
+    isDayNow(){
+      const curTime = this.getCityTimeInMillis().getTime()
       if ((curTime - ((this.detailedWeather.sys.sunset+this.detailedWeather.timezone) * 1000 - 10800000) > 3600000) || ((this.detailedWeather.sys.sunrise+this.detailedWeather.timezone)*1000 - 10800000 - curTime > 3600000)){
         console.log(false)
         return false
@@ -456,14 +459,8 @@ export default {
       return `https://openweathermap.org/img/wn/${code}.png`;
     },
     getCityTime() {
-      const now = new Date();
-      const cityOffset = this.detailedWeather.timezone * 1000; 
-      const utcTime = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
-      const cityTime = new Date(utcTime + cityOffset);
-
-      const hours = String(cityTime.getHours()).padStart(2, '0');
-      const minutes = String(cityTime.getMinutes()).padStart(2, '0');
-
+      const hours = String(this.getCityTimeInMillis().getHours()).padStart(2, '0');
+      const minutes = String(this.getCityTimeInMillis().getMinutes()).padStart(2, '0');
       return `${hours}:${minutes}`;
     },
     async getDetailedWeatherInCity(){
@@ -477,11 +474,9 @@ export default {
           console.log("Данные из кэша:");
           this.detailedWeather = this.cache[cacheKey].data;
           await this.getHourlyForecast(this.detailedWeather.coord.lat, this.detailedWeather.coord.lon)
-          // await this.getYestTemperature(this.detailedWeather.coord.lat, this.detailedWeather.coord.lon);
           return;
         }
 
-        // Ограничение частоты запросов
         if (this.lastRequestTime && currentTime - this.lastRequestTime < this.rateLimit) {
           console.log("Ожидание перед запросом...");
           await new Promise((resolve) => setTimeout(resolve, this.rateLimit));
@@ -497,7 +492,6 @@ export default {
             console.log(`Данные для ${curCity} успешно получены:`, this.detailedWeather);
             this.lastRequestTime = currentTime;
             await this.getHourlyForecast(this.detailedWeather.coord.lat, this.detailedWeather.coord.lon)
-            // await this.getYestTemperature(this.detailedWeather.coord.lat, this.detailedWeather.coord.lon);
         } else{
             alert('Ошибка!')
         }

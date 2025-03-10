@@ -203,45 +203,73 @@ export default {
                 alert('Ошибка!');
             }
         },
-        getWeather(day, hour){
-            if(this.fiveDayForecastList[day].hour[hour].cloud > 70){
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Sleet"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
-                    return "Rain"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Snow"
-                }
-                return "Сloudy"
+        getPrecipitationType(day, hour) {
+            const weather = this.fiveDayForecastList[day].hour[hour];
+            if (weather.will_it_rain && weather.will_it_snow) {
+                return "Sleet";
             }
-            if(this.fiveDayForecastList[day].hour[hour].cloud<=70 && this.fiveDayForecastList[day].hour[hour].cloud > 35){
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Sleet"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
-                    return "Rain"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Snow"
-                }
-                return "Partly cloudy"
+            if (weather.will_it_rain) {
+                return "Rain";
             }
-            if(this.fiveDayForecastList[day].hour[hour].cloud<=35 && this.fiveDayForecastList[day].hour[hour].cloud > 15){
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Sleet"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
-                    return "Rain"
-                }
-                if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
-                    return "Snow"
-                }
-                return "Few clouds"
+            if (weather.will_it_snow) {
+                return "Snow";
             }
-            return "Clear sky"
+            return null;
+        },
+        getWeather(day, hour) {
+            const weather = this.fiveDayForecastList[day].hour[hour];
+            const precipitation = this.getPrecipitationType(day, hour);
+
+            if (weather.cloud > 70) {
+                return precipitation || "Cloudy";
+            }
+            if (weather.cloud <= 70 && weather.cloud > 35) {
+                return precipitation || "Partly cloudy";
+            }
+            if (weather.cloud <= 35 && weather.cloud > 15) {
+                return precipitation || "Few clouds";
+            }
+            return "Clear sky";
         }
+        
+        //     if(this.fiveDayForecastList[day].hour[hour].cloud > 70){
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Sleet"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
+        //             return "Rain"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Snow"
+        //         }
+        //         return "Сloudy"
+        //     }
+        //     if(this.fiveDayForecastList[day].hour[hour].cloud<=70 && this.fiveDayForecastList[day].hour[hour].cloud > 35){
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Sleet"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
+        //             return "Rain"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Snow"
+        //         }
+        //         return "Partly cloudy"
+        //     }
+        //     if(this.fiveDayForecastList[day].hour[hour].cloud<=35 && this.fiveDayForecastList[day].hour[hour].cloud > 15){
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1 && this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Sleet"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_rain == 1){
+        //             return "Rain"
+        //         }
+        //         if(this.fiveDayForecastList[day].hour[hour].will_it_snow == 1){
+        //             return "Snow"
+        //         }
+        //         return "Few clouds"
+        //     }
+        //     return "Clear sky"
+        // }
     },
 }
 </script>

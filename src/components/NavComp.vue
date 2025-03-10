@@ -3,8 +3,6 @@
         <div class="nav">
             <router-link to="/" class="linkStyle"><div class="mainLink"><h1>Main page</h1></div></router-link>
             <router-link to="/fiveDayForecast" class="linkStyle"><div class="linkToFind"><h1>Next 5 days</h1></div></router-link>
-            <!-- <div class="mainLink"><h1>Главная</h1></div> -->
-            <!-- <div class="linkToFind"><h1>Прогноз на 5 дней</h1></div> -->
         </div>
         <div class="rightPart">
             <div class="curCity">
